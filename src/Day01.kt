@@ -1,17 +1,42 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+
+    fun separateElves(input: List<String>): List<List<Int>> {
+        val elfSeparators = input.mapIndexedNotNull { i, str -> i.takeIf { str.isEmpty() } }
+        val elfSeparatorsWithEnds = listOf(0, *elfSeparators.toTypedArray(), input.size)
+        val elfIndices = elfSeparatorsWithEnds.windowed(2)
+
+        return elfIndices.map { (low, high) ->
+            input.subList(low, high).filter { it.isNotEmpty() }.map { it.toInt() }
+        }
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun returnMaxCalories(input: List<String>, topN: Int): Int {
+        val caloriesPerItem = separateElves(input)
+        val calorieTotals = caloriesPerItem.map { it.sum() }
+
+        return calorieTotals.sortedDescending().take(topN).sum()
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    fun part1(): Int {
+        val testInput = readInput("Day01_test")
+        val test_ans = returnMaxCalories(testInput, 1)
+        check(test_ans == 24000)
 
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+        val input = readInput("Day01")
+        val ans = returnMaxCalories(input, 1)
+        return ans
+    }
+
+    fun part2(): Int {
+        val testInput = readInput("Day01_test")
+        val test_ans = returnMaxCalories(testInput, 3)
+        check(test_ans == 45000)
+
+        val input = readInput("Day01")
+        val ans = returnMaxCalories(input, 3)
+        return ans
+    }
+
+    check(part1() == 66186)
+    check(part2() == 196804)
 }
