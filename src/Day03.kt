@@ -20,8 +20,8 @@ fun main() {
         return ans
     }
 
-    check(part1() == 7831)
-    check(part2() == 2683)
+    println(part1())
+    println(part2())
 }
 
 

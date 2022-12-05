@@ -37,6 +37,6 @@ fun main() {
         return ans
     }
 
-    check(part1() == 66186)
-    check(part2() == 196804)
+    println(part1())
+    println(part2())
 }
